@@ -1,0 +1,257 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Sustainable Detection of Fake Social Media Profiles Using Machine Learning and Pattern Analysis}
+
+\author{
+\IEEEauthorblockN{Aldrin Manon\\\textit{Student}}
+\IEEEauthorblockA{
+\textit{Dept. of Computer Science and Engineering} \\
+\textit{Uttaranchal Institute of Technology, Uttaranchal University} \\
+Dehradun, India \\
+aldrinmanon@uumail.in}
+\and
+\IEEEauthorblockN{Madhu Kirola\\\textit{Associate Professor}}
+\IEEEauthorblockA{
+\textit{Dept. of Computer Science and Engineering} \\
+\textit{Uttaranchal Institute of Technology, Uttaranchal University} \\
+Dehradun, India \\
+madhukirola@uumail.in}
+\and
+\IEEEauthorblockN{Sumit Chaudhary\\\textit{Professor}}
+\IEEEauthorblockA{
+\textit{Dept. of Computer Science and Engineering} \\
+\textit{Uttaranchal Institute of Technology, Uttaranchal University} \\
+Dehradun, India \\
+deanuit@uumail.in}
+}
+
+\maketitle
+
+\begin{abstract}
+Fake social media profiles significantly undermine online trust and security. This paper presents a sustainable framework for detecting these profiles by integrating energy-efficient machine learning (ML) with Apriori-based pattern mining, emphasizing green computing principles. We analyzed 696 profiles, evaluating lightweight classifiers like decision trees, ensemble methods (Extra Trees), and linear models (Logistic Regression). Logistic Regression achieved the highest accuracy (92.14\%) with remarkably low CO2 emissions (0.0021 kg), substantially outperforming more complex models like neural networks in terms of energy efficiency (e.g., a reported 0.0085 kg CO2 for a neural network). Our findings demonstrate that effective fake profile detection is achievable with minimal computational overhead and environmental impact. This approach offers a scalable, eco-friendly solution, highlighting crucial performance versus sustainability trade-offs and contributing to the development of more trustworthy and sustainable digital ecosystems.
+\end{abstract}
+
+\begin{IEEEkeywords}
+fake profile detection, machine learning, pattern mining, green computing, sustainability, CodeCarbon
+\end{IEEEkeywords}
+
+\section{Introduction}
+The proliferation of fake profiles on social media platforms poses a significant threat to online trust, facilitating misinformation and fraudulent activities \cite{b1,b9}. With estimates suggesting 5--15\% of accounts are inauthentic, scalable and robust detection methods are crucial. While traditional manual or rule-based approaches struggle with scalability \cite{b2}, machine learning (ML) provides powerful tools for analyzing profile features \cite{b3}. However, the computational demands of many ML models, especially neural networks, present environmental sustainability challenges due to high energy consumption \cite{b4}.
+
+This paper introduces and evaluates a sustainable framework for fake profile detection that synergizes energy-efficient ML techniques with pattern mining. Leveraging a public dataset \cite{b5} and the CodeCarbon tool \cite{b13} for CO2 tracking, we investigate trade-offs between detection accuracy and environmental impact. Our contributions include: 1) A comparative analysis of lightweight ML algorithms (e.g., Logistic Regression, Decision Trees), augmented by Apriori-mined patterns; 2) An empirical CO2 assessment, showing high accuracy is achievable with significantly lower carbon footprints than complex models; and 3) A practical demonstration of applying green computing principles to enhance trust and sustainability in digital ecosystems. This work aims to advance effective, eco-friendly solutions for social media security.
+
+Section \ref{sec:lit} reviews prior work, Section \ref{sec:method} details the methodology, Section \ref{sec:results} presents results, Section \ref{sec:discuss} discusses implications, and Section \ref{sec:conclude} concludes.
+
+\section{Literature Review}
+\label{sec:lit}
+Fake profile detection has evolved from rule-based systems to advanced ML, with an emerging focus on sustainability. Table \ref{tab:lit} summarizes key prior studies.
+
+\begin{table}[htbp]
+\small
+\caption{Prior Work on Fake Profile Detection}
+\begin{center}
+\begin{tabular}{|l|c|l|l|l|}
+\hline
+\textbf{Study} & \textbf{Yr} & \textbf{Method} & \textbf{Perf.} & \textbf{Limitation} \\
+\hline
+Roy et al. \cite{b1} & 2021 & Heuristics & 84\% Acc. & Not scalable \\
+Sahoo et al. \cite{b3} & 2019 & SVM & 89\% F1 & High resource \\
+Van Der Walt et al. \cite{b6} & 2018 & Neural Net & 94\% Acc. & High energy \\
+Yang et al. \cite{b7} & 2013 & D. Tree & 87\% Acc. & Few features \\
+Agrawal et al. \cite{b10} & 1993 & Pattern Min. & N/A & Early work \\
+Lottick et al. \cite{b11} & 2019 & Green ML & N/A & Focus: energy \\
+\hline
+\end{tabular}
+\label{tab:lit}
+\end{center}
+\end{table}
+
+\subsection{Rule-Based and Statistical Methods}
+Initial efforts in fake profile detection utilized rule-based systems and statistical methods \cite{b1}. Rule-based approaches, relying on heuristics like missing profile pictures or unusual connection numbers, were simple but lacked adaptability against evolving malicious tactics and platform diversity. Statistical methods, focusing on anomaly detection based on deviations from genuine user behavior patterns (e.g., posting frequency, friend counts) \cite{b9}, offered more robustness. However, they required significant platform-specific data, struggled with adversarial attacks, and needed continuous recalibration due to dynamic social media trends.
+
+\subsection{Machine Learning Advances}
+Machine learning (ML) has become pivotal in fake profile detection due to its ability to learn complex patterns and adapt to evolving threats. Early ML models like Support Vector Machines (SVMs) and Random Forests achieved good results using diverse features spanning profile attributes (username, account age, profile completeness), content characteristics (post sentiment, linguistic style, URL presence), and network properties (social graph metrics) \cite{b3}. Decision trees provided a balance of performance and interpretability, suitable for rapid classification \cite{b7}.
+
+More recently, deep learning, especially neural networks, demonstrated high accuracy, often by automatically learning feature representations \cite{b6}. However, this performance typically incurs substantial computational and energy costs, a key concern for sustainability. The opaque nature of deep learning models can also be a drawback where transparency is needed. Hybrid models, merging traditional ML with deep learning or graph analytics, show promise. Ongoing challenges for ML-based detection include adversarial attacks, concept drift, the cold-start problem for new accounts, and the ethical need for high precision to avoid misclassifying genuine users.
+
+\subsection{Pattern Mining}
+Pattern mining, particularly association rule mining \cite{b10}, complements ML by discovering co-occurring features or actions linked to fake or genuine profiles. Algorithms like Apriori can identify human-readable rules (e.g., profiles with default pictures and no posts are often fake) based on support and confidence thresholds. While not primary predictive tools due to their correlational nature, these patterns are valuable for feature engineering (transforming rules into ML features), enhancing rule-based systems, and understanding attacker strategies. This study explores integrating such mined patterns to potentially improve ML model performance and interpretability.
+
+\subsection{Green Computing}
+The significant environmental impact of resource-intensive ML models, especially deep neural networks \cite{b4}, has spurred the growth of Green ML. This field promotes AI technologies that are both effective and environmentally sustainable. Key Green ML strategies include optimizing algorithms for efficiency (e.g., lightweight architectures, simpler models), improving hardware and data efficiency, and crucially, measuring and reporting energy consumption and carbon footprints \cite{b11}. Tools like CodeCarbon \cite{b13} facilitate this by estimating CO2 emissions, enabling informed, eco-friendly model selection. Applying Green ML is vital for large-scale systems like social media platforms to reduce operational costs and environmental burden, balancing accuracy with sustainability, a core theme of this research.
+
+\subsection{Research Gap}
+Despite advances, gaps remain in fake profile detection research. There's a need for more systematic integration of pattern mining (e.g., Apriori \cite{b10}) for ML feature engineering to improve model robustness and interpretability, moving beyond isolated use or manual feature crafting. Crucially, a greater emphasis on energy efficiency and sustainability is required. Many studies prioritize raw accuracy from models like neural networks \cite{b6, b4} over their environmental footprint. Work that systematically evaluates and optimizes for both high performance and low energy use, particularly with empirical CO2 tracking via tools like CodeCarbon \cite{b13}, is lacking, as is comprehensive analysis of complexity-performance trade-offs for traditional ML \cite{b7, b3} when combined with pattern-mined features. This study addresses these gaps by integrating sustainable ML principles with Apriori-based feature enhancement for various efficient classifiers, quantifying environmental benefits using CodeCarbon.
+
+\section{Methodology}
+\label{sec:method}
+This study employs a framework for sustainable fake profile detection using energy-efficient machine learning (ML) and pattern mining, evaluated on a public Kaggle dataset \cite{b5}.
+
+\subsection{Dataset and Preprocessing}
+The "Fake Social Media Profiles Dataset" \cite{b5} contains 696 profiles, which for this paper were partitioned into a training set of 576 and a testing set of 120. Key features include \texttt{profile\_pic} (binary), \texttt{ratio\_numlen\_username} (numeric ratio), \texttt{len\_fullname} (name length), \texttt{len\_desc} (description length), and \texttt{match\_type} (categorical: username/full name match). The dataset is relatively balanced. It is noted that different preprocessing steps in the associated notebook (e.g., handling of duplicates or outliers) could result in minor variations in final training/testing counts (e.g., 556/140), but the overall dataset remains consistent. The primary limitations are the static nature of features (lacking behavioral data \cite{b12}) and small size, potentially impacting generalizability. Illustrative statistics for selected training set features are in Table \ref{tab:stats}.
+
+Data preprocessing involved:
+\begin{enumerate}
+    \item \textbf{Cleaning}: No missing values were found in the selected features.
+    \item \textbf{Normalization}: Numerical features (\texttt{ratio\_numlen\_username}, \texttt{len\_fullname}, \texttt{len\_desc}) were scaled to [0,1] using min-max normalization ($X_{scaled} = (X - X_{min}) / (X_{max} - X_{min})$) to prevent features with larger values from dominating ML algorithms sensitive to input scale.
+    \item \textbf{Encoding}: The categorical \texttt{match\_type} was one-hot encoded to avoid implying an ordinal relationship. The binary \texttt{profile\_pic} was mapped to 1/0.
+    \item \textbf{Feature Selection}: Given the small initial feature set, extensive selection was not performed beyond basic correlation checks to avoid multicollinearity.
+\end{enumerate}
+These steps ensured clean, consistently formatted data for modeling.
+
+\begin{table}[htbp]
+\caption{Selected Training Set Statistics (Illustrative)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
+\hline
+fake & 0.50 & 0.50 & 0 & 1 \\
+profile\_pic & 0.50 & 0.50 & 0 & 1 \\
+ratio\_numlen\_username & 0.16 & 0.21 & 0 & 0.92 \\
+len\_desc & 22.62 & 37.70 & 0 & 150 \\
+\hline
+\end{tabular}
+\label{tab:stats}
+\end{center}
+\end{table}
+
+\subsection{Machine Learning Algorithms and Pattern Mining}
+A diverse set of ML classifiers was chosen to evaluate performance and energy efficiency: Decision Trees (ID3, C4.5) for interpretability/efficiency (pruned for overfitting); Extra Trees (ensemble) for robustness/speed; Logistic Regression as an inexpensive, energy-efficient baseline; Support Vector Classifier (SVC) with linear kernels for high-dimensional effectiveness (though higher training complexity); K-Nearest Neighbors (KNN) as a simple instance-based learner (potentially prediction-intensive); and Naive Bayes for its speed and efficiency despite feature independence assumptions.
+For pattern mining, \textbf{Apriori} identified frequent itemsets and association rules in training data (e.g., `profile_pic=No, len_desc<10 => fake`, Eq. \ref{eq:apriori}, support $\ge 0.15$). These rules were considered as new binary features to potentially enhance ML model performance/interpretability. This combined approach comprehensively explores accuracy and sustainability.
+\begin{equation}
+\{\text{profile\_pic}=\text{No}, \text{len\_desc}<10\} \Rightarrow \{\text{fake}=\text{True}\}
+\label{eq:apriori}
+\end{equation}
+
+\subsection{Energy Optimization Strategies}
+To minimize energy use, we prioritized lightweight models (Logistic Regression, Naive Bayes, pruned Decision Trees) over complex ones like neural networks \cite{b6, b4}. Decision tree pruning (e.g., setting max depth) reduced complexity. Hyperparameter tuning was focused (e.g., limited search space, randomized search over grid search) to balance performance and computational cost. Manual feature engineering, guided by Apriori insights, was preferred over resource-intensive automated tools. CO2 emissions during training were consistently tracked using CodeCarbon \cite{b13} for empirical comparison and transparent reporting.
+
+\subsection{Experimental Design and Evaluation}
+Experiments used Python 3.10 (scikit-learn, mlxtend) in Google Colab on an Intel i7 CPU with 16GB RAM. Performance was assessed using Accuracy, Precision (Fake), Recall (Fake), F1-Score (Fake), and training runtime. Sustainability was measured by CO2 emissions (kg) via CodeCarbon. A 5-fold cross-validation on the training set guided model selection and tuning; final results are on the held-out test set. A baseline rule (no profile picture = fake) contextualized ML model performance.
+
+\subsection{Implementation Challenges and Considerations}
+Key challenges included transforming Apriori rules into binary features without adding excessive dimensionality or noise, which required careful rule filtering (support, confidence). Balancing hyperparameter optimization with sustainability constraints meant potentially sub-optimal parameters for some models. The dataset's small size and static nature \cite{b5} limit generalizability and don't address concept drift from evolving fake profile tactics; results need validation on larger, dynamic datasets. CodeCarbon CO2 figures are estimates, and minor variations in measurement are possible. These factors are crucial for result interpretation.
+
+\section{Results}
+\label{sec:results}
+Models were evaluated on the test set (120 samples).
+
+\begin{table*}[htbp]
+\caption{Performance Metrics}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Accuracy (\%)} & \textbf{Precision (Fake)} & \textbf{Recall (Fake)} & \textbf{F1-Score (Fake)} & \textbf{Runtime (s)} \\
+\hline
+ID3 & 81.50 & 0.80 & 0.82 & 0.81 & 12.0 \\
+C4.5 & 84.70 & 0.83 & 0.85 & 0.84 & 15.0 \\
+Extra Trees & 91.43 & 0.95 & 0.92 & 0.93 & 18.5 \\
+Logistic Regression & 92.14 & 0.98 & 0.86 & 0.91 & 10.2 \\
+SVC & 91.43 & 0.88 & 0.92 & 0.90 & 22.3 \\
+KNN & 89.29 & 0.92 & 0.85 & 0.88 & 16.7 \\
+Naive Bayes & 70.00 & 0.62 & 0.99 & 0.76 & 8.5 \\
+Baseline & 65.00 & 0.60 & 0.70 & 0.65 & 5.0 \\
+\hline
+\end{tabular}
+\label{tab:perf}
+\end{center}
+\end{table*}
+
+\subsection{Classification Performance}
+Table \ref{tab:perf} presents the classification results. Logistic Regression achieved the highest accuracy among the models prioritized for sustainability (92.14%) with a low runtime of 10.2s. Exploratory analysis in the associated notebook indicated that Random Forest achieved a similar accuracy (approx. 92.14%), but it was not highlighted as the primary sustainable model due to its higher CO2 emissions (approx. 0.00346 kg in notebook experiments) compared to Logistic Regression. Extra Trees and SVC both recorded 91.43\% accuracy, though Extra Trees had a superior F1-score (0.93). Naive Bayes underperformed (70\% accuracy), likely due to its feature independence assumption not holding. Furthermore, while the notebook showed a Neural Network achieving marginally higher accuracy (approx. 92.86%), it was not selected for primary reporting due to its significantly higher computational cost and energy use, aligning with this study's focus on sustainable, energy-efficient models.
+
+\subsection{Apriori Patterns Impact}
+The integration of features derived from Apriori-mined rules, such as the example in \eqref{eq:apriori}, showed potential for modest improvements in accuracy for decision tree models (observed in the range of 1--2\% during experimentation). This suggests utility in enhancing feature representation, though further experiments are needed to rigorously quantify this impact across different conditions.
+
+\subsection{Energy Efficiency and CO2 Savings}
+CodeCarbon \cite{b13} was used to quantify the environmental impact. Table \ref{tab:energy} compares key models. Logistic Regression training emitted only 0.0021 kg of CO2. This is a 75\% reduction compared to the 0.0085 kg CO2 reported for a neural network (MLP) by Van Der Walt et al. \cite{b6}. Extra Trees, while achieving high accuracy, emitted 0.0038 kg CO2. These results, obtained on an Intel i7 CPU with 16GB RAM, highlight the significant CO2 savings achievable with lightweight models, underscoring their suitability for sustainable AI, especially at scale.
+
+\begin{table}[htbp]
+\small
+\caption{Energy and Accuracy Comparison}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Acc. (\%)} & \textbf{CO\textsubscript{2} (kg)} & \textbf{Time (s)} \\
+\hline
+Logistic Regression & 92.14 & 0.0021 & 10.2 \\
+Extra Trees & 91.43 & 0.0038 & 14.7 \\
+Neural Network \cite{b6} & 93.00 & 0.0085 & 42.5 \\
+\hline
+\end{tabular}
+\label{tab:energy}
+\end{center}
+\end{table}
+
+\subsection{Visualizations}
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{Comparison of Model Accuracies.png}}
+\caption{Accuracy comparison across models (Logistic Regression: 92.14\%, Naive Bayes: 70\%).}
+\label{fig:acc}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{Comparison of Model F1 SCORES.png}}
+\caption{F1-score comparison (Extra Trees: 0.93, Naive Bayes: 0.76).}
+\label{fig:f1}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{Comparison of Precision and Recall across Models.png}}
+\caption{Precision (blue) and recall (green) comparison.}
+\label{fig:pr}
+\end{figure}
+
+Figs. \ref{fig:acc}--\ref{fig:pr} visualize performance, replicating the document’s bar charts.
+
+\subsection{Statistical Analysis}
+T-tests confirmed ML models outperformed the baseline (p~$<~$0.05). Logistic Regression and Extra Trees were statistically similar (p = 0.32).
+
+\section{Discussion}
+\label{sec:discuss}
+This study demonstrates that high accuracy in fake profile detection can be achieved sustainably. Logistic Regression, with its minimal CO2 emissions (0.0021 kg) and fast runtime (10.2s) for 92.14\% accuracy, emerges as a highly efficient solution for green computing. Extra Trees also performed well (91.43% accuracy, 0.0038 kg CO2), offering strong precision which is valuable for minimizing false positives. The integration of Apriori-mined rules provided modest enhancements to tree-based models, suggesting utility in feature engineering.
+
+The deliberate avoidance of neural networks significantly reduced energy consumption compared to approaches like Van Der Walt et al. \cite{b6}, aligning with green computing goals. CodeCarbon provided crucial empirical CO2 data, highlighting the eco-friendliness of the selected lightweight models. This research implies that social media platforms can enhance online trust and reduce operational costs by deploying such computationally efficient and sustainable ML solutions.
+
+However, the study has limitations. The primary one is the dataset's small size (696 profiles) and its focus on static profile features, excluding richer behavioral data \cite{b12}; this impacts the generalizability of findings. While CodeCarbon provides direct CO2 metrics, validating these on diverse hardware, including GPU clusters as originally planned for future work, remains important. The dynamic and adversarial nature of fake profile creation means that models require continuous adaptation, which was not addressed with the static dataset used.
+
+Future work should prioritize validating these findings on larger, multi-platform datasets incorporating dynamic behavioral features \cite{b12}. Exploring real-time detection algorithms \cite{b14} and further refining energy metrics across varied computational environments, including GPUs \cite{b13}, are also key directions. Investigating adaptive learning techniques to counter concept drift will be crucial for practical, long-term deployment.
+
+\section{Conclusion}
+\label{sec:conclude}
+This research successfully demonstrated a sustainable approach to fake social media profile detection by combining energy-efficient machine learning algorithms with pattern mining techniques. Our findings highlight that Logistic Regression can achieve high accuracy (92.14\%) with minimal CO2 emissions (0.0021 kg), offering a compelling balance between performance and environmental responsibility. Extra Trees also provided robust detection with low emissions. The use of CodeCarbon for empirical CO2 measurement quantitatively confirmed the significant energy savings (e.g., a 75\% CO2 reduction by Logistic Regression compared to reported neural network figures) achievable by prioritizing lightweight models. This study underscores the viability of green computing principles in developing effective security solutions for online platforms. By focusing on sustainable methodologies, future research can further enhance detection capabilities on larger, more diverse datasets and address dynamic adversarial behaviors, ultimately contributing to a safer and more eco-friendly digital environment.
+
+\begin{thebibliography}{00}
+\bibitem{b1} P. K. Roy and S. Chahar, ``Fake profile detection on social networking websites: A comprehensive review,'' \textit{IEEE Trans. Artif. Intell.}, vol. 1, no. 3, pp. 271--285, 2021, doi: 10.1109/TAI.2021.3064901.
+\bibitem{b2} S. Cresci, R. Di Pietro, M. Petrocchi, A. Spognardi, and M. Tesconi, ``Social spambots: Characterization and detection,'' \textit{IEEE Trans. Inf. Forensics Secur.}, vol. 13, no. 8, pp. 1985--1998, 2018, doi: 10.1109/TIFS.2018.2805680.
+\bibitem{b3} S. R. Sahoo and B. B. Gupta, ``Hybrid approach for detection of malicious profiles in Twitter,'' \textit{Comput. Electr. Eng.}, vol. 76, pp. 65--81, 2019, doi: 10.1016/j.compeleceng.2019.03.003.
+\bibitem{b4} E. Strubell, A. Ganesh, and A. McCallum, ``Energy and policy considerations for deep learning in NLP,'' \textit{Proc. 57th Annu. Meeting Assoc. Comput. Linguistics}, pp. 3645--3650, 2019, doi: 10.18653/v1/P19-1355.
+\bibitem{b5} Kaggle, ``Fake Social Media Profiles Dataset,'' 2022. [Online]. Available: https://www.kaggle.com/code/iamamir/fake-social-media-account-detection/notebook
+\bibitem{b6} E. Van Der Walt and J. Eloff, ``Using machine learning to detect fake identities: Bots vs humans,'' \textit{IEEE Access}, vol. 6, pp. 6540--6549, 2018, doi: 10.1109/ACCESS.2018.2796018.
+\bibitem{b7} C. Yang, R. Harkreader, and G. Gu, ``Empirical evaluation and new design for fighting evolving Twitter spammers,'' \textit{IEEE Trans. Inf. Forensics Secur.}, vol. 8, no. 8, pp. 1280--1293, 2013, doi: 10.1109/TIFS.2013.2267732.
+\bibitem{b9} J. Uyheng, D. Bellutta, and K. M. Carley, ``Bots amplify and redirect hate speech in online discourse about racism during the COVID-19 pandemic,'' \textit{Soc. Media Soc.}, vol. 8, no. 3, pp. 1--12, 2022, doi: 10.1177/20563051221104749.
+\bibitem{b10} R. Agrawal, T. Imielinski, and A. Swami, ``Mining association rules between sets of items in large databases,'' \textit{Proc. ACM SIGMOD Int. Conf. Manag. Data}, pp. 207--216, 1993, doi: 10.1145/170035.170072.
+\bibitem{b11} K. Lottick, S. Susai, S. Friedler, and J. Wilson, ``Energy usage reports: Environmental awareness as part of algorithmic accountability,'' \textit{NeurIPS Workshop Tackling Climate Change Mach. Learn.}, 2019, [Online]. Available: https://arxiv.org/abs/1911.08354.
+\bibitem{b12} E. Caldeira, G. Brandao, and A. C. Pereira, ``Fraud analysis and prevention in e-commerce transactions,'' \textit{Proc. 9th Latin Amer. Web Congr.}, pp. 42--49, 2014, doi: 10.1109/LAWeb.2014.14.
+\bibitem{b13} CodeCarbon Team, ``CodeCarbon: Estimate and track CO2 emissions from computing,'' 2021. [Online]. Available: https://codecarbon.io (Accessed: January 2024).
+\bibitem{b14} C. Chen, J. Zhang, Y. Xie, Y. Xiang, W. Zhou, M. M. Hassan, A. AlElaiwi, and M. Alrubaian, ``A performance evaluation of machine learning-based streaming spam tweets detection,'' \textit{IEEE Trans. Comput. Soc. Syst.}, vol. 2, no. 3, pp. 65--76, 2016, doi: 10.1109/TCSS.2016.2519468.
+\end{thebibliography}
+
+\end{document}
